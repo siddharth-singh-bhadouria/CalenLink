@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="stylesheets/home.css" />
   </head>
   <body>
-    <!-- Navigation Bar -->
     <header>
       <nav>
         <ul>
@@ -24,13 +23,19 @@
         </ul>
 
         <div class="auth-buttons">
-          <button class="btn">Sign In</button>
-          <button class="btn">Sign Up</button>
+          <form action="/login">
+            <button class="btn">Login</button>
+          </form>
+          <form action="">
+            <button class="btn">Register</button>
+          </form>
+          <form action="">
+            <button class="btn">Logout</button>
+          </form>
         </div>
       </nav>
     </header>
 
-    <!-- Hero Section -->
     <section id="home" class="hero">
       <div class="hero-content">
         <h1>Welcome to Calenlink</h1>
@@ -39,9 +44,6 @@
       </div>
     </section>
 
-    <!-- Main Content Sections (About, Services, Testimonials, How It Works) -->
-
-    <!-- Footer -->
     <footer>
       <div class="footer-content">
         <div class="contact-info">
