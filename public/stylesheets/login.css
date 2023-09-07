@@ -25,8 +25,9 @@
 }
 
 .input-container {
-  margin-bottom: 20px;
+  margin: 15px auto; /* Equal left and right margins, and centered vertically */
   text-align: left;
+  max-width: 300px; /* Adjust the maximum width as needed */
 }
 
 .input-container label {
