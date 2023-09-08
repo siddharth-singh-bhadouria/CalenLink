@@ -14,7 +14,11 @@ app.get("/", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-  res.render("login");
+  res.render("users/login");
+});
+
+app.get("/register", (req, res) => {
+  res.render("users/register");
 });
 
 app.listen(3000, () => {
