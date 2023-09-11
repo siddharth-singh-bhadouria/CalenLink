@@ -11,11 +11,18 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const mysql = require("mysql2");
 
+const userRoutes = require("./routes/users");
+const pageRoutes = require("./routes/pages");
+
 const db = mysql.createConnection({
-  host: "your-mysql-host",
-  user: "your-username",
-  password: "your-password",
-  database: "your-database-name",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+});
+
+db.connect(() => {
+  console.log("DATABASE CONNECTED!!");
 });
 
 app.engine("ejs", ejsMate);
@@ -41,37 +48,18 @@ app.use(
   })
 );
 
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
+// app.use(passport.initialize());
+// app.use(passport.session());
+// passport.use(new LocalStrategy(user.authenticate()));
 
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+// passport.serializeUser(user.serializeUser());
+// passport.deserializeUser(user.deserializeUser());
 
-app.get("/", (req, res) => {
-  res.render("pages/home");
-});
+app.use("/", pageRoutes);
+app.use("/", userRoutes);
 
-app.get("/about", (req, res) => {
-  res.render("pages/about");
-});
+const port = process.env.port || 3000;
 
-app.get("/services", (req, res) => {
-  res.render("pages/services");
-});
-
-app.get("/contact", (req, res) => {
-  res.render("pages/contact");
-});
-
-app.get("/login", (req, res) => {
-  res.render("users/login");
-});
-
-app.get("/register", (req, res) => {
-  res.render("users/register");
-});
-
-app.listen(3000, () => {
-  console.log("LISTENING TO PORT 3000!!");
+app.listen(port, () => {
+  console.log(`LISTENING TO PORT ${port}!!`);
 });
