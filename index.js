@@ -11,6 +11,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const crypto = require("crypto");
 const mysql = require("mysql2");
+const User = require("./models/users");
 
 const userRoutes = require("./routes/users");
 const pageRoutes = require("./routes/pages");
@@ -48,51 +49,51 @@ app.use(
     },
   })
 );
-
 passport.use(
-  new LocalStrategy(function verify(username, password, cb) {
-    db.get(
-      "SELECT * FROM users WHERE username = ?",
-      [username],
-      function (err, row) {
-        if (err) {
-          return cb(err);
-        }
-        if (!row) {
-          return cb(null, false, {
-            message: "Incorrect username or password.",
-          });
+  new LocalStrategy(
+    { usernameField: "email" }, // Specify the field used for the username
+    async (email, password, done) => {
+      try {
+        // Find the user by email
+        const user = await User.findOne({ where: { email } });
+
+        if (!user) {
+          return done(null, false, { message: "Incorrect email." });
         }
 
-        crypto.pbkdf2(
-          password,
-          row.salt,
-          310000,
-          32,
-          "sha256",
-          function (err, hashedPassword) {
-            if (err) {
-              return cb(err);
-            }
-            if (!crypto.timingSafeEqual(row.hashed_password, hashedPassword)) {
-              return cb(null, false, {
-                message: "Incorrect username or password.",
-              });
-            }
-            return cb(null, row);
-          }
-        );
+        // Here, you would typically compare the provided password with the hashed password stored in the database
+        // If the passwords match, call done(null, user), otherwise, call done(null, false)
+
+        // Example (assuming you're using a library like bcrypt for password hashing):
+        // const isValidPassword = await bcrypt.compare(password, user.password);
+        // if (isValidPassword) {
+        //   return done(null, user);
+        // } else {
+        //   return done(null, false, { message: 'Incorrect password.' });
+        // }
+      } catch (error) {
+        return done(error);
       }
-    );
-  })
+    }
+  )
 );
 
-// app.use(passport.initialize());
-// app.use(passport.session());
-// passport.use(new LocalStrategy(user.authenticate()));
+app.use(passport.initialize());
+app.use(passport.session());
 
-// passport.serializeUser(user.serializeUser());
-// passport.deserializeUser(user.deserializeUser());
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findByPk(id)
+    .then((user) => {
+      done(null, user);
+    })
+    .catch((error) => {
+      done(error);
+    });
+});
 
 app.use("/", pageRoutes);
 app.use("/", userRoutes);
