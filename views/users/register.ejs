@@ -4,7 +4,7 @@
 <div class="register-container">
   <div class="register-box">
     <!-- register Form -->
-    <form action="">
+    <form action="/register" method="POST">
       <h2>Register</h2>
 
       <!-- Username Input -->
@@ -15,6 +15,18 @@
           id="username"
           name="username"
           placeholder="Enter your username"
+          required
+        />
+      </div>
+
+      <!-- Email Input -->
+      <div class="input-container">
+        <label for="email">Email:</label>
+        <input
+          type="text"
+          id="email"
+          name="email"
+          placeholder="Enter your email"
           required
         />
       </div>
