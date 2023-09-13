@@ -6,7 +6,7 @@ These instructions will help you get a copy of the project up and running on you
 
 ### Installation Instructions
 
-Follow these steps to run the Fanisko Watchparty AR project locally:
+Follow these steps to run the Calenlink appointment scheduler project locally:
 
 1. **Clone the Repository**
 
