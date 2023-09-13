@@ -10,9 +10,10 @@ Follow these steps to run the Fanisko Watchparty AR project locally:
 
 1. **Clone the Repository**
 
-https://github.com/siddharth-singh-bhadouria/CalenLink
+   https://github.com/siddharth-singh-bhadouria/CalenLink
 
 2. **Navigate to the Project Directory**
+
    cd calenlink
 
 3. **Install Dependencies**
