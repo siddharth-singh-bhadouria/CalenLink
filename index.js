@@ -31,6 +31,17 @@ db.connect(() => {
   console.log("DATABASE CONNECTED!!");
 });
 
+db.query(
+  `insert into user(username,email,password) values ('sid','sid@s','sid')`,
+  (err, result, fields) => {
+    if (err) {
+      return console.log(err);
+    } else {
+      return console.log(result);
+    }
+  }
+);
+
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -40,83 +51,83 @@ app.use(express.static(path.join(__dirname, "public")));
 
 const secret = process.env.SECRET || "thisshouldbeabettersecret";
 
-app.use(
-  session({
-    secret,
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      httpOnly: true,
-      // secure: true,
-      expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-    },
-  })
-);
+// app.use(
+//   session({
+//     secret,
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: {
+//       httpOnly: true,
+//       // secure: true,
+//       expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+//       maxAge: 1000 * 60 * 60 * 24 * 7,
+//     },
+//   })
+// );
 
-passport.use(
-  new LocalStrategy(function verify(username, password, cb) {
-    db.get(
-      "SELECT * FROM users WHERE username = ?",
-      [username],
-      function (err, row) {
-        if (err) {
-          return cb(err);
-        }
-        if (!row) {
-          return cb(null, false, {
-            message: "Incorrect username or password.",
-          });
-        }
+// passport.use(
+//   new LocalStrategy(function verify(username, password, cb) {
+//     db.get(
+//       "SELECT * FROM users WHERE username = ?",
+//       [username],
+//       function (err, row) {
+//         if (err) {
+//           return cb(err);
+//         }
+//         if (!row) {
+//           return cb(null, false, {
+//             message: "Incorrect username or password.",
+//           });
+//         }
 
-        crypto.pbkdf2(
-          password,
-          row.salt,
-          310000,
-          32,
-          "sha256",
-          function (err, hashedPassword) {
-            if (err) {
-              return cb(err);
-            }
-            if (!crypto.timingSafeEqual(row.hashed_password, hashedPassword)) {
-              return cb(null, false, {
-                message: "Incorrect username or password.",
-              });
-            }
-            return cb(null, row);
-          }
-        );
-      }
-    );
-  })
-);
+//         crypto.pbkdf2(
+//           password,
+//           row.salt,
+//           310000,
+//           32,
+//           "sha256",
+//           function (err, hashedPassword) {
+//             if (err) {
+//               return cb(err);
+//             }
+//             if (!crypto.timingSafeEqual(row.hashed_password, hashedPassword)) {
+//               return cb(null, false, {
+//                 message: "Incorrect username or password.",
+//               });
+//             }
+//             return cb(null, row);
+//           }
+//         );
+//       }
+//     );
+//   })
+// );
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
+// passport.serializeUser((user, done) => {
+//   done(null, user.id);
+// });
 
-passport.deserializeUser((id, done) => {
-  User.findByPk(id)
-    .then((user) => {
-      done(null, user);
-    })
-    .catch((error) => {
-      done(error);
-    });
-});
+// passport.deserializeUser((id, done) => {
+//   User.findByPk(id)
+//     .then((user) => {
+//       done(null, user);
+//     })
+//     .catch((error) => {
+//       done(error);
+//     });
+// });
 
-sequelize
-  .sync({ force: false }) // Set force to true if you want to recreate tables on every app start (use with caution)
-  .then(() => {
-    console.log("Database and tables have been synchronized.");
-  })
-  .catch((error) => {
-    console.error("Database synchronization failed:", error);
-  });
+// sequelize
+//   .sync({ force: false }) // Set force to true if you want to recreate tables on every app start (use with caution)
+//   .then(() => {
+//     console.log("Database and tables have been synchronized.");
+//   })
+//   .catch((error) => {
+//     console.error("Database synchronization failed:", error);
+//   });
 
 app.use("/", pageRoutes);
 app.use("/", userRoutes);
