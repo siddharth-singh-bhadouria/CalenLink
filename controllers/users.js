@@ -1,5 +1,6 @@
 const User = require("../models/users");
 const passport = require("passport");
+const flash = require("connect-flash");
 
 module.exports.renderRegister = (req, res) => {
   res.render("users/register");
@@ -24,15 +25,3 @@ module.exports.register = async (req, res) => {
 module.exports.renderLogin = (req, res) => {
   res.render("users/login");
 };
-
-module.exports.login =
-  (passport.authenticate("local", {
-    failureFlash: true,
-    failureRedirect: "/login",
-  }),
-  (req, res) => {
-    req.flash("success", "Welcome Back!");
-    const redirectUrl = res.locals.returnTo || "/campgrounds";
-    delete res.locals.returnTo;
-    res.redirect(redirectUrl);
-  });
