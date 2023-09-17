@@ -1,13 +1,7 @@
 // models/User.js
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = new Sequelize(
-  "calenlink",
-  process.env.DB_USERNAME,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    dialect: "mysql",
-  }
+  `mysql://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`
 );
 
 const User = sequelize.define("User", {
