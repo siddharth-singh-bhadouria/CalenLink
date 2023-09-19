@@ -16,39 +16,19 @@ db.connect((err) => {
   console.log("Connected to MySQL.");
 });
 
+const userRoutes = require("./routes/users");
+const pageRoutes = require("./routes/pages");
+
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/", (req, res) => {
-  res.render("pages/home");
-});
-
-// CREATE
-
-app.get("/register", (req, res) => {
-  res.render("users/register");
-});
-
-app.get("/login", (req, res) => {
-  res.render("users/login");
-});
-
-app.post("/register", (req, res) => {
-  let data = {
-    username: req.body.username,
-    password: req.body.password,
-    email: req.body.email,
-  };
-  let sql = "INSERT INTO user SET ?";
-  db.query(sql, data, (err, results) => {
-    if (err) throw err;
-    res.send("User added.");
-  });
-});
+app.use("/", pageRoutes);
+app.use("/", userRoutes);
 
 // // READ
 // app.get("/users", (req, res) => {
