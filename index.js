@@ -6,6 +6,7 @@ const mysql = require("mysql2");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
+const flash = require("connect-flash");
 
 const db = mysql.createConnection({
   host: "localhost",
@@ -45,6 +46,8 @@ app.use(
     },
   })
 );
+
+app.use(flash());
 
 // Passport initialization
 app.use(passport.initialize());
@@ -90,6 +93,16 @@ passport.deserializeUser((id, done) => {
   });
 });
 
+app.use((req, res, next) => {
+  // if (!["/login", "/register"].includes(req.originalUrl)) {
+  //   req.session.returnTo = req.originalUrl;
+  // }
+  res.locals.currentUser = req.user;
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
+});
+
 app.use("/", pageRoutes);
 app.use("/", userRoutes);
 
@@ -119,6 +132,12 @@ app.use("/", userRoutes);
 //     res.send("User deleted.");
 //   });
 // });
+
+app.use((err, req, res, next) => {
+  const { status = 500 } = err;
+  if (!err.message) err.message = "Something went wrong";
+  res.status(status).render("error", { err });
+});
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
