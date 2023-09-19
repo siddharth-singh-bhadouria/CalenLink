@@ -21,4 +21,8 @@ router.get("/scheduledEvents", (req, res) => {
   res.render("pages/scheduledEvents");
 });
 
+router.get("/newEvents", (req, res) => {
+  res.render("pages/newEvents");
+});
+
 module.exports = router;
