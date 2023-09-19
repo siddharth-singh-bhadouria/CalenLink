@@ -9,10 +9,10 @@ const db = mysql.createConnection({
   database: "calenlink",
 });
 
-db.connect((err) => {
-  if (err) throw err;
-  console.log("Connected to MySQL.");
-});
+// db.connect((err) => {
+//   if (err) throw err;
+//   console.log("Connected to MySQL.");
+// });
 
 module.exports.renderRegister = (req, res) => {
   res.render("users/register");

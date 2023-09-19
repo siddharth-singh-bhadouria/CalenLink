@@ -10,13 +10,10 @@ router
   .get(users.renderLogin)
   .post(
     passport.authenticate("local", {
+      successRedirect: "/scheduledEvents",
+      failureRedirect: "/",
       failureFlash: true,
-      failureRedirect: "/login",
-    }),
-    (req, res) => {
-      const redirectUrl = "/pages/scheduledEvents";
-      res.redirect(redirectUrl);
-    }
+    })
   );
 // .post(catchAsync(users.login))
 
