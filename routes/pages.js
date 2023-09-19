@@ -17,4 +17,8 @@ router.get("/contact", (req, res) => {
   res.render("pages/contact");
 });
 
+router.get("/scheduledEvents", (req, res) => {
+  res.render("pages/scheduledEvents");
+});
+
 module.exports = router;

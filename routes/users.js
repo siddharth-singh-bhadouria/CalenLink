@@ -14,7 +14,7 @@ router
       failureRedirect: "/login",
     }),
     (req, res) => {
-      const redirectUrl = "/home";
+      const redirectUrl = "/pages/scheduledEvents";
       res.redirect(redirectUrl);
     }
   );

@@ -4,17 +4,17 @@ const path = require("path");
 const ejsMate = require("ejs-mate");
 const mysql = require("mysql2");
 
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "sid20302",
-  database: "calenlink",
-});
+// const db = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "sid20302",
+//   database: "calenlink",
+// });
 
-db.connect((err) => {
-  if (err) throw err;
-  console.log("Connected to MySQL.");
-});
+// db.connect((err) => {
+//   if (err) throw err;
+//   console.log("Connected to MySQL.");
+// });
 
 const userRoutes = require("./routes/users");
 const pageRoutes = require("./routes/pages");
