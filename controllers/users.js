@@ -36,7 +36,8 @@ module.exports.register = async (req, res) => {
     if (err) throw err;
     res.send("User added.");
   });
-  return res.redirect("/scheduledEvents");
+  // req.flash("success", "Welcome to your page!");
+  res.redirect("/scheduledEvents");
 };
 
 module.exports.renderLogin = (req, res) => {

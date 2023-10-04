@@ -13,7 +13,13 @@ router
       successRedirect: "/scheduledEvents",
       failureRedirect: "/login",
       failureFlash: true,
-    })
+    }),
+    (req, res) => {
+      req.flash("success", "Welcome Back!");
+      // const redirectUrl = res.locals.returnTo || "/scheduledEvents";
+      // delete res.locals.returnTo
+      // res.redirect(redirectUrl);
+    }
   );
 // .post(catchAsync(users.login))
 
